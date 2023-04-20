@@ -4,8 +4,7 @@ Project state: In Progress
 Author: Kauê Cristiano
 
 Features Checklist (TO DO):
-- Finish profiles page
-- Add other users profile view
+- Add Search Bar
 - Add friendlist , friendrequests
 - Add friend private chat
 - Add Projects page
