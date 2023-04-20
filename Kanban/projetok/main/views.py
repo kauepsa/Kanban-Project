@@ -1,10 +1,10 @@
-from django.views.generic import TemplateView
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.http.response import HttpResponse
 from django.contrib.auth.decorators import login_required
 from .models import Perfil
+from django.views.generic import DetailView
 
 def paginainicial(request):
     return render(request, 'main/index.html', {'user': request.user})
@@ -87,3 +87,7 @@ def perfilUsuario(request):
             linkedin=linkedin, github=github 
             )
         return redirect('perfil')
+    
+def PerfilPublico(request, username):
+    perfil = get_object_or_404(Perfil, user__username=username)
+    return render(request, 'main/teste.html', {'perfil': perfil})
