@@ -9,8 +9,8 @@ class Perfil(models.Model):
     genero = models.CharField(max_length=100)
     descricao = models.CharField(max_length=500, null=True)
     useremail = models.EmailField(max_length=100)
-    foto_perfil = models.ImageField(upload_to='main/imagens/perfil/', null=True)
-    foto_banner = models.ImageField(upload_to='main/imagens/banner/', null=True)
+    foto_perfil = models.ImageField(upload_to='imagens/perfil/', null=True)
+    foto_banner = models.ImageField(upload_to='imagens/banner/', null=True)
     linkedin = models.URLField(null=True)
     github = models.URLField(null=True)
 
