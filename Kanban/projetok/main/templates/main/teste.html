@@ -1,0 +1,71 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block content %}
+<div class="container" style="background-color: #ebebeb; border-radius: 10px; box-shadow: 0px 0px 10px #b9b9b9;">
+    <div class="row justify-content-center align-items-center d-flex">
+        <div class="col-lg-6 mt-1 mb-5">
+            <div class="card mt-3" id="profile-card" style="border-radius: 2%;">
+                {% if perfil.foto_banner %}
+                <div class="card-body" style="background-image: url({{ perfil.foto_banner.url }});
+                border-radius: 2%;">
+                {% else %}
+                <div class="card-body" style="background-image: url({% static 'imagens/default/foto_banner_default.jpg' %})">
+                {% endif %}
+                    {% if perfil.foto_perfil %}
+                    <img class="card-img-top" src="{{ perfil.foto_perfil.url }}" style="max-width: 20%; max-height:20%;
+                    border-radius: 10%; border: 3px solid white;">
+                    {% else %}
+                    <img class="card-img-top" src="{% static 'imagens/default/foto_perfil_default.jpg' %}" 
+                    style="width: 120px; height:120px; border-radius: 10%; border: 3px solid white;">
+                    {% endif %}
+                </div>
+                <div class="card-title m-3"><h2>{{ perfil.nome }}</h2></div>
+            </div>
+            <div class="box mt-2 mb-4 justify-content-center rounded">
+                {% if perfil.github %}
+                <a href="https://{{ perfil.github }}" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+                    <i class="fab fa-github"></i>
+                </a>
+                {% endif %}
+                {% if perfil.linkedin %}
+                <a href="https://{{ perfil.linkedin }}" target="_blank" rel="noopener noreferrer" class="btn btn-info">
+                    <i class="fab fa-linkedin"></i>
+                </a>
+                {% endif %}
+            </div>
+
+            <h4> Nome</h4>
+            <p>{{ perfil.nome }}</p>
+            <h4> Idade</h4>
+            <p>{{ perfil.idade }}</p>
+            <h4> Gênero</h4>
+            <p>{{ perfil.genero }}</p>
+
+                           
+            
+            <h4>Descrição</h4>
+            {% if not perfil.descricao %}
+            <p>Parece que não havia nada para ser dito ...</p>
+            {% else %}
+            <p>{{ perfil.descricao }}</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+<style>
+.card, .box-6 {
+    background-color: #ebebeb;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px #b9b9b9;
+}
+#banner {
+    background-image: url("{% static 'imagens/default/foto_banner_default.jpg' %}");
+}
+#banner {
+    background-size: cover;
+    min-height: 40vh;
+    position: relative;
+}
+</style>
+
+{% endblock %}
