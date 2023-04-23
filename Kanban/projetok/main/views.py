@@ -4,7 +4,6 @@ from django.contrib.auth import authenticate, login, logout
 from django.http.response import HttpResponse
 from django.contrib.auth.decorators import login_required
 from .models import Perfil
-from django.views.generic import DetailView
 from django.contrib import messages
 from django.http import Http404
 

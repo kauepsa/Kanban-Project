@@ -1,0 +1,46 @@
+{% block content %}
+<button id="criar-item" type="button" class="btn btn-success" style="max-width: 15vw; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">Criar Novo Item</button>
+<div class="modal fade" id="modal-criar-item" tabindex="-1" role="dialog" aria-labelledby="modal-criar-item-titulo" aria-hidden="true">
+<form method="post" action="{% url 'criar_item' projeto_id=projeto.id  %}">
+        {% csrf_token %}
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modal-criar-item-titulo">Criar Novo Item</h5>
+      </div>
+      <div class="modal-body">
+          <div class="form-group">
+            <label for="nome" class="fs-5">Nome:</label>
+            <input type="text" class="form-control" id="nome" name="titulo" required>
+            <label for="descricao" class="fs-5">Descrição:</label>
+            <input type="text" class="form-control" id="descricao" name="descricao" required>
+            <label for="coluna" class="fs-5">Coluna:</label>
+            <select class="form-select" name="coluna">
+                {% for coluna in colunas %}
+                <option value="{{ coluna.id }}">{{ coluna.nome }}</option>
+                {% endfor %}
+            </select>  
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="cancelar-item" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="submit" class="btn btn-primary">Criar</button>
+      </div>
+    </div>
+  </div>
+</form>
+</div>
+<script>
+    $(document).ready(function() {
+      $('#criar-item').click(function() {
+        $('#modal-criar-item').modal('show');
+      });
+    });
+  
+    $(document).ready(function() {
+      $('#cancelar-item').click(function() {
+        $('#modal-criar-item').modal('hide');
+      });
+    });
+  </script>
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+<div class="container mt-5 mb-5"style="min-height: 80vh;">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card" >
+                <div class="card-title fs-3 text-center">Editar Coluna</div>
+                <div class="card-body">
+                    <form method="post" action="{% url 'editar_coluna' projeto_id=projeto.id coluna_id=coluna.id %}">
+                        {% csrf_token %}
+                        <label class="fs-4 mb-5">Clique em "Salvar" para salvar as alterações feitas na coluna "{{ coluna.nome }}". Caso não queira que as alterações feitas sejam salvas , clique em "Cancelar" e volte para a página do seu projeto.</label>
+                    <div class="form-group justify-content-evenly">
+                        <label for="nome" class="fs-5">Nome:</label>
+                        <input type="text" class="form-control" id="nome" name="nome" value="{{ coluna.nome }}" required>
+                        </div>
+                </div>
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-primary">Salvar</button>
+                    <a href="{% url 'visualizar_projeto' projeto.id %}" class="btn btn-secondary">Cancelar</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
