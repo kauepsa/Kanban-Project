@@ -1,5 +1,5 @@
 {% block content %}
-<button id="criar-item" type="button" class="btn btn-success" style="max-width: 15vw; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">Criar Novo Item</button>
+<button id="criar-item" type="button" class="btn btn-success">Novo Item</button>
 <div class="modal fade" id="modal-criar-item" tabindex="-1" role="dialog" aria-labelledby="modal-criar-item-titulo" aria-hidden="true">
 <form method="post" action="{% url 'criar_item' projeto_id=projeto.id  %}">
         {% csrf_token %}

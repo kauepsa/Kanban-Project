@@ -18,9 +18,45 @@ def criar_projeto(request):
         projeto.managers.add(request.user)
         projeto.create_colunas_padrao()
         
-        return redirect('index')
+        return redirect('listar_projetos')
     
     return render(request, 'kanban/criar_projeto.html')
+
+@login_required(login_url='index')
+def editar_projeto(request, projeto_id):
+    projeto = get_object_or_404(Projeto, id=projeto_id)
+
+    context = {
+        'projeto' : projeto
+    }
+
+    if not request.user in projeto.managers.all():
+        return redirect('index')
+    
+    if request.method == 'POST':
+        projeto.nome = request.POST.get('nome')
+        projeto.descricao = request.POST.get('descricao')
+        projeto.save()
+        return redirect('visualizar_projeto', projeto_id)
+    return render(request, 'kanban/editar_projeto.html', context)
+
+@login_required(login_url='index')
+def excluir_projeto(request, projeto_id):
+    projeto = get_object_or_404(Projeto, pk=projeto_id)
+
+    context = {
+        'projeto' : projeto
+    }
+
+    if not request.user in projeto.managers.all():
+        return redirect('index')
+
+    if request.method == 'POST':
+        projeto.delete()
+        return redirect('index')
+    
+    return render(request, 'kanban/excluir_projeto.html', context)
+
 
 @login_required(login_url='login')
 def lista_projetos(request):
@@ -45,7 +81,7 @@ def projeto_tables(request, pk):
 def criar_coluna(request, projeto_id):
     projeto = get_object_or_404(Projeto, pk=projeto_id)
     
-    if not (request.user in projeto.managers.all() or request.user in projeto.users.all()):
+    if not request.user in projeto.managers.all():
         return redirect('index')
 
     if request.method == 'POST':
@@ -129,3 +165,121 @@ def excluir_item(request, projeto_id, coluna_id, item_id):
         return redirect('visualizar_projeto', pk=projeto_id)
 
     return render(request, 'kanban/excluir_item.html', context)
+
+
+@login_required(login_url='index')
+def editar_item(request, projeto_id, item_id):
+    projeto = get_object_or_404(Projeto, pk=projeto_id)
+    colunas = Coluna.objects.filter(projeto_id=projeto)
+    item = get_object_or_404(Item, pk=item_id)
+
+    context = {
+        'projeto' : projeto,
+        'colunas' : colunas,
+        'item' : item
+    }
+    
+
+    if not (request.user in projeto.managers.all() or request.user in projeto.users.all()):
+        return redirect('index')
+    
+    if request.method == 'POST':
+        item.titulo = request.POST.get('titulo')
+        item.descricao = request.POST.get('descricao')
+        item.coluna = get_object_or_404(Coluna, id=request.POST.get('coluna'))
+        item.save()
+        return redirect('visualizar_projeto', pk=projeto_id)
+    
+    return render(request, 'kanban/editar_item.html', context)
+
+
+@login_required(login_url='index')
+def gerenciar_membros(request, projeto_id):
+    projeto = get_object_or_404(Projeto, pk=projeto_id)
+
+    context = {
+        'projeto' : projeto
+    }
+
+    if not request.user in projeto.managers.all():
+        return redirect('index')
+    
+    return render(request, 'kanban/gerenciar_membros.html', context)
+
+def adicionar_manager(request, projeto_id):
+    projeto = get_object_or_404(Projeto, pk=projeto_id)
+    manager = request.POST.get('manager')
+
+    if not request.user in projeto.managers.all():
+        return redirect('index')
+
+    if request.method == 'POST':
+        projeto.managers.add(manager)
+        projeto.users.remove(manager)
+        projeto.save()
+    
+    return redirect('gerenciar_membros', projeto_id)
+
+def adicionar_membro(request, projeto_id):
+    projeto = get_object_or_404(Projeto, pk=projeto_id)
+    membro = get_object_or_404(User, username=request.POST.get('membro'))
+
+    if not request.user in projeto.managers.all():
+        return redirect('index')
+
+    if request.method == 'POST':
+        if membro not in projeto.managers.all():
+            projeto.convidados.add(membro)
+        projeto.save()
+    
+    return redirect('gerenciar_membros', projeto_id)
+
+def cancelar_convite(request, projeto_id, convite_id):
+    projeto = get_object_or_404(Projeto, pk=projeto_id)
+
+    if not request.user in projeto.managers.all():
+        return redirect('index')
+    
+    if request.user in projeto.managers.all():
+        projeto.convidados.remove(convite_id)
+        projeto.save()
+
+    return redirect('gerenciar_membros', projeto_id)
+
+        
+def grupo_request(request, projeto_id):
+    projeto = get_object_or_404(Projeto, pk=projeto_id)
+
+    if (request.user in projeto.managers.all() or request.user in projeto.users.all()):
+        return redirect('vizualizar_projeto', projeto_id)
+    else:
+        projeto.pendentes.add(request.user)
+        projeto.save()
+        return redirect('listar_projetos')
+    
+
+def cancelar_pendente(request, projeto_id):
+    projeto = get_object_or_404(Projeto, pk=projeto_id)
+    projeto.pendentes.remove(request.user)
+    projeto.save()
+    return redirect('listar_projetos')
+
+
+def recusar_convite(request, projeto_id, solicitacao_id):
+    projeto = get_object_or_404(Projeto, pk=projeto_id)
+    
+    if (request.user in projeto.managers.all() or request.user in projeto.users.all()):
+        projeto.pendentes.remove(solicitacao_id)
+        projeto.save()
+        return redirect('listar_projetos')
+
+def aceitar_convite(request, projeto_id, solicitacao_id):
+    projeto = get_object_or_404(Projeto, pk=projeto_id)
+
+    if (request.user in projeto.managers.all() or request.user in projeto.users.all()):
+        projeto.pendentes.remove(solicitacao_id)
+        projeto.users.add(solicitacao_id)
+        return redirect('listar_projetos')
+
+    
+    

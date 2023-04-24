@@ -6,7 +6,9 @@ class Projeto(models.Model):
     descricao = models.TextField()
     managers = models.ManyToManyField(User, related_name='projetos_administrados')
     users = models.ManyToManyField(User, related_name='projetos_participantes')
-    
+    convidados = models.ManyToManyField(User, related_name='convidados')
+    pendentes = models.ManyToManyField(User, related_name='pendentes')
+
     def create_colunas_padrao(self):
         coluna_a_fazer = Coluna(nome="A Fazer", editavel=False, projeto=self)
         coluna_em_progresso = Coluna(nome="Em Progresso", editavel=False, projeto=self)
@@ -16,7 +18,6 @@ class Projeto(models.Model):
         coluna_em_progresso.save()
         coluna_em_revisao.save()
         coluna_concluido.save()
-
 
 
 class Coluna(models.Model):

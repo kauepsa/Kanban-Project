@@ -1,5 +1,5 @@
 {% block content %}
-<button id="criar-coluna" type="button" class="btn btn-success">Criar Nova Coluna</button>
+<button id="criar-coluna" type="button" class="btn btn-success">Nova Coluna</button>
 <div class="modal fade" id="modal-criar-coluna" tabindex="-1" role="dialog" aria-labelledby="modal-criar-coluna-titulo" aria-hidden="true">
 <form method="post" action="{% url 'criar_coluna' projeto_id=projeto.id %}">
         {% csrf_token %}

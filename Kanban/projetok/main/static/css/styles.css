@@ -40,3 +40,8 @@ body {
         font-family: "Brush Script MT", Times, serif;
         font-size: 1.8em;
     }
+
+    .card {
+        background-color: whitesmoke;
+        border: 3px solid lightgray ;
+    }

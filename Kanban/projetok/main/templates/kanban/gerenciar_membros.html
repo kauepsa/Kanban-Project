@@ -1,0 +1,121 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-4 col-sm-12 mt-5 mb-5">
+            <div class="card pt-2" style="min-height: 60vh;">
+                <div class="card-title text-center">
+                    <h2 class="fs-3">Managers</h2>
+                </div>
+                <div class="card-body">
+                    <ul>
+                        {% for manager in projeto.managers.all %}
+                        <div class="box d-flex justify-content-around border-bottom border-dark pb-2 pt-2">
+                            <h3 class="fs-5">{{ manager.username }}</h3>
+                            <a href="{% url 'perfil' %}{{ manager.username }}" class="btn btn-primary fas fa-user"></a>
+                        </div>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="card-footer">
+                    <form method="post" action="{% url 'adicionar_manager' projeto_id=projeto.id %}">
+                        {% csrf_token %}
+                    <div class="form-group justify-content-evenly mb-5 text-start">
+                        <label for="manager" class="fs-5">Adicionar Manager:</label>
+                        {% if not projeto.users.all %}
+                        <select class="form-select mb-3" name="manager" disabled="true"></select>
+                        {% else %}
+                        <select class="form-select mb-3" name="manager">
+                            {% for membro in projeto.users.all %}
+                            <option value="{{ membro.id }}">{{ membro.username }}</option>
+                            {% endfor %}
+                          </select>  
+                          {% endif %}
+                        
+                    </div>
+                    <button type="submit" class="btn btn-primary">Adicionar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-sm-12 mt-5 mb-5">
+            <div class="card pt-2" style="min-height: 60vh;">
+                <div class="card-title text-center">
+                    <h2 class="fs-3">Membros</h2>
+                </div>
+                <div class="card-body">
+                    <ul>
+                        {% for membro in projeto.users.all %}
+                        <div class="box d-flex justify-content-around border-dark pt-2 pb-2 border-bottom border-black">
+                            <h3 class="fs-5">{{ membro.username }}</h3>
+                            <div class="btn-group">
+                                <a href="{% url 'perfil' %}{{ membro.username }}" class="btn btn-primary fas fa-user"></a>
+                                <a href="#" class="btn btn-danger fas fa-x"></a>
+                            </div>
+
+                        </div>
+
+                        {% empty %}
+                        <h2 class="fs-5">Parece que não há nenhum membro no projeto .</h2>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="card-footer">
+                    <form method="post" action="{% url 'adicionar_membro' projeto_id=projeto.id %}">
+                        {% csrf_token %}
+                    <div class="form-group justify-content-evenly mb-5 text-start">
+                        <label for="membro" class="fs-5">Adicionar Membro:</label>
+                        <input type="text" class="form-control" name="membro" id="membro">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Adicionar</button>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-lg-4 col-sm-12 mt-5 mb-5">
+            <div class="card pt-2" style="min-height: 60vh;">
+                <div class="card-title text-center">
+                    <h2 class="fs-3">Solicitações</h2>
+                </div>
+                <div class="card-body">
+                    <ul>
+                        {% for solicitacao in projeto.pendentes.all %}
+                        <li class="fs-5">{{ solicitacao.username }}</li>
+                        <a href="{% url 'aceitar_solicitacao' projeto.id solicitacao.id %}" class="btn btn-success">Aceitar</a>
+                        <a href="{% url 'recusar_solicitacao' projeto.id solicitacao.id %}" class="btn btn-danger">Recusar</a>
+                        {% empty %}
+                        <h2 class="fs-5">Não há solicitações de entrada no momento.</h2>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-sm-12 mt-5 mb-5">
+            <div class="card pt-2" style="min-height: 60vh;">
+                <div class="card-title text-center">
+                    <h2 class="fs-3">Convites</h2>
+                </div>
+                <ul>
+                {% for convidado in projeto.convidados.all %}
+                <div class="card-body">
+                        <a class="fs-5 text-dark" href="{% url 'perfil' %}{{ convidado.username }}" disabled="true">{{ convidado.username }}</a>
+                        <a href="{% url 'cancelar_convite' projeto.id convidado.id %}" class="btn btn-danger fas fa-x"></a>
+                </div>
+
+                </div>
+                </ul>
+                {% empty %}
+                <div class="card-body">
+                    <h2 class="fs-5">Não há nenhum convite pendente no momento!</h2>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

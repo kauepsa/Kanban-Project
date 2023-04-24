@@ -2,11 +2,13 @@
 
 {% block content %}
 <div class="col-12 text-end">
+    {% if user in projeto.managers.all %}
     <div class="btn-group">
-        <button class="btn btn-success"><a href="#" ><i class="fas fa-cog"></i></a></button>
-        <button class="btn btn-primary"><a href="#" ><i class="fas fa-user"></i></a></button>
-        <button class="btn btn-danger"><a href="#" ><i class="fas fa-x"></i></a></button>
+        <a class="btn btn-success" href="{% url 'editar_projeto' projeto.id %}" ><i class="fas fa-cog"></i></a>
+        <a class="btn btn-primary" href="{% url 'gerenciar_membros' projeto.id %}" ><i class="fas fa-user"></i></a></button>
+        <a class="btn btn-danger" href="{% url 'excluir_projeto' projeto.id %}" ><i class="fas fa-x"></i></a>
     </div>
+    {% endif %}
 </div>
   <div class="container-fluid pt-5">
     <div class="row no-gutters">
@@ -24,31 +26,29 @@
             <li> <strong><a href="{% url 'perfil' %}{{ manager.username }}" style="color:black;">{{ manager.username }}</a></strong></li>
           {% endfor %}
         </ul>
-        <h4>Users:</h4>
+        <h4>Membros:</h4>
         <ul>
           {% for user in projeto.users.all %}
-            <li>{{ user.username }}</li>
+            <li> <a href="{% url 'perfil' %}{{ user.username }}"style="color:black;">{{ user.username }}</a> </li>
           {% endfor %}
         </ul>
         <hr>
       </div>
       <div class="col-lg-10 col-12 pb-5 justify-content-center">
-        <div class="col-12">
-            <div class="btn-group mt-3 mb-3">
-                <button class="btn btn-primary active" id="principal" style="max-width: 30vw; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">Colunas Principais</button>
-                <button class="btn btn-primary" id="adicionais" style="max-width: 30vw; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">Colunas Adicionais</button>
+            <div class="btn-group mt-3 mb-3 ">
+                <button class="btn btn-primary active" id="principal">Principal</button>
+                <button class="btn btn-primary" id="adicionais">Secundária</button>
                 {% if user in projeto.managers.all %}
                 {% include 'kanban/criar_coluna.html' %}
                 {% endif %}
                 {% include 'kanban/criar_item.html' %}
             </div>
-        </div>
         <div class="row d-flex" id="colunas" style="min-height: 20vh; border-top: 1px solid lightgray;">
           {% for coluna in colunas %}
             {% if coluna.editavel %}
-              <div class="col-3 m-0 p-0 col-adicionais" style="display:none; min-height: 50vh;">
+              <div class="col-lg-3 m-0 p-0 col-adicionais" style="display:none; min-height: 50vh;">
             {% else %}
-              <div class="col-3 m-0 p-0 col-principais" style="min-height: 50vh;">
+              <div class="col-lg-3 m-0 p-0 col-principais" style="min-height: 50vh;">
             {% endif %}
               <div class="card" style="min-height: 50vh;">
                 <div class="card-header d-flex justify-content-between align-items-center">
@@ -58,7 +58,6 @@
                     <a class="btn btn-secondary fas fa-pen-to-square" href="{% url 'editar_coluna' projeto_id=projeto.id coluna_id=coluna.id %}"></a>
                     <a class="btn btn-danger fas fa-x" href="{% url 'excluir_coluna' projeto_id=projeto.id coluna_id=coluna.id %}"></a>
                   </div>
-
                   {% endif %}                  
                 </div>
                 <div class="card-body">
@@ -69,7 +68,7 @@
                         <p class="card-text">{{ item.descricao }}</p>
                       </div>
                       <div class="card-footer">
-                        <a href="#" class="btn btn-sm btn-primary">Editar</a>
+                        <a href="{% url 'editar_item' projeto.id item.id %}" class="btn btn-sm btn-primary">Editar</a>
                         <a href="{% url 'excluir_item' projeto_id=projeto.id coluna_id=coluna.id item_id=item.id %}" class="btn btn-sm btn-danger">Excluir</a>
                       </div>
                     </div>

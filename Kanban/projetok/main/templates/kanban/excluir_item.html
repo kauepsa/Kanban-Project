@@ -2,7 +2,7 @@
 
 
 {% block content %}
-<form id="form-excluir-coluna" method="POST" action="{% url 'excluir_item' projeto_id=projeto.id coluna_id=coluna.id item_id=item.id %}">
+<form id="form-excluir-item" method="POST" action="{% url 'excluir_item' projeto_id=projeto.id coluna_id=coluna.id item_id=item.id %}">
     {% csrf_token %}
         <div class="container justify-content-center text-center mt-5" style="min-height: 100vh;">
             <div class="row">

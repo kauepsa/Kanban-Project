@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from .models import Perfil
 from django.contrib import messages
 from django.http import Http404
+from kanbantables.models import Projeto
 
 def paginainicial(request):
     return render(request, 'main/index.html', {'user': request.user})
@@ -124,3 +125,16 @@ def url_correct(url):
     if not url.startswith("www."):
         url = "www." + url
     return url
+
+
+def search(request, search_field):
+    projetos = Projeto.objects.filter(nome=search_field)
+    usuarios = Perfil.objects.filter(user__username=search_field)
+
+    context = {
+        'projetos' : projetos,
+        'usuarios' : usuarios,
+        'search' : search_field
+    }
+
+    return render(request, 'main/search.html', context)
