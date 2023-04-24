@@ -1,0 +1,110 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+<div class="col-12 text-end">
+    {% if user in projeto.managers.all %}
+    <div class="btn-group">
+        <a class="btn btn-success" href="{% url 'editar_projeto' projeto.id %}" ><i class="fas fa-cog"></i></a>
+        <a class="btn btn-primary" href="{% url 'gerenciar_membros' projeto.id %}" ><i class="fas fa-user"></i></a></button>
+        <a class="btn btn-danger" href="{% url 'excluir_projeto' projeto.id %}" ><i class="fas fa-x"></i></a>
+    </div>
+    {% endif %}
+</div>
+  <div class="container-fluid pt-5">
+    <div class="row no-gutters">
+
+        <div class="col-12 text-center">
+            <h2>{{ projeto.nome }}</h2>
+            <p>{{ projeto.descricao }}</p>
+        </div>
+
+      <div class="col-lg-2 col-12 bg-light" style="min-height: 100vh;">
+        <hr>
+        <h4>Managers:</h4>
+        <ul>
+          {% for manager in projeto.managers.all %}
+            <li> <strong><a href="{% url 'perfil' %}{{ manager.username }}" style="color:black;">{{ manager.username }}</a></strong></li>
+          {% endfor %}
+        </ul>
+        <h4>Membros:</h4>
+        <ul>
+          {% for user in projeto.users.all %}
+            <li> <a href="{% url 'perfil' %}{{ user.username }}"style="color:black;">{{ user.username }}</a> </li>
+          {% endfor %}
+        </ul>
+        <hr>
+      </div>
+      <div class="col-lg-10 col-12 pb-5 justify-content-center">
+            <div class="btn-group mt-3 mb-3 ">
+                <button class="btn btn-primary active" id="principal">Principal</button>
+                <button class="btn btn-primary" id="adicionais">Secundária</button>
+                {% if user in projeto.managers.all %}
+                {% include 'kanban/criar_coluna.html' %}
+                {% endif %}
+                {% include 'kanban/criar_item.html' %}
+            </div>
+        <div class="row d-flex" id="colunas" style="min-height: 20vh; border-top: 1px solid lightgray;">
+          {% for coluna in colunas %}
+            {% if coluna.editavel %}
+              <div class="col-lg-3 m-0 p-0 col-adicionais" style="display:none; min-height: 50vh;">
+            {% else %}
+              <div class="col-lg-3 m-0 p-0 col-principais" style="min-height: 50vh;">
+            {% endif %}
+              <div class="card" style="min-height: 50vh;">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                  <h4 class="card-title" style="font-size: medium;">{{ coluna.nome }}</h4>
+                  {% if coluna.editavel and user in projeto.managers.all %}
+                  <div class="btn-group">
+                    <a class="btn btn-secondary fas fa-pen-to-square" href="{% url 'editar_coluna' projeto_id=projeto.id coluna_id=coluna.id %}"></a>
+                    <a class="btn btn-danger fas fa-x" href="{% url 'excluir_coluna' projeto_id=projeto.id coluna_id=coluna.id %}"></a>
+                  </div>
+                  {% endif %}                  
+                </div>
+                <div class="card-body">
+                  {% for item in coluna.itens.all %}
+                    <div class="card mb-3">
+                      <div class="card-body">
+                        <h5 class="card-title">{{ item.titulo }}</h5>
+                        <p class="card-text">{{ item.descricao }}</p>
+                      </div>
+                      <div class="card-footer">
+                        <a href="{% url 'editar_item' projeto.id item.id %}" class="btn btn-sm btn-primary">Editar</a>
+                        <a href="{% url 'excluir_item' projeto_id=projeto.id coluna_id=coluna.id item_id=item.id %}" class="btn btn-sm btn-danger">Excluir</a>
+                      </div>
+                    </div>
+                  {% empty %}
+                    <p>Nenhum item nesta coluna</p>
+                  {% endfor %}
+                </div>
+                <div class="card-footer">
+                  
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const principalButton = document.querySelector('#principal');
+    const adicionaisButton = document.querySelector('#adicionais');
+    const colunasPrincipais = document.querySelectorAll('.col-principais');
+    const colunasAdicionais = document.querySelectorAll('.col-adicionais');
+
+    principalButton.addEventListener('click', () => {
+      colunasAdicionais.forEach(coluna => coluna.style.display = 'none');
+      colunasPrincipais.forEach(coluna => coluna.style.display = 'block');
+      principalButton.classList.add('active');
+      adicionaisButton.classList.remove('active');
+    });
+
+    adicionaisButton.addEventListener('click', () => {
+      colunasPrincipais.forEach(coluna => coluna.style.display = 'none');
+      colunasAdicionais.forEach(coluna => coluna.style.display = 'block');
+      adicionaisButton.classList.add('active');
+      principalButton.classList.remove('active');
+    });
+  </script>
+{% endblock %}

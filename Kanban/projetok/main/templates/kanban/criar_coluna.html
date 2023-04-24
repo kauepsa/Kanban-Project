@@ -1,0 +1,38 @@
+{% block content %}
+<button id="criar-coluna" type="button" class="btn btn-success">Nova Coluna</button>
+<div class="modal fade" id="modal-criar-coluna" tabindex="-1" role="dialog" aria-labelledby="modal-criar-coluna-titulo" aria-hidden="true">
+<form method="post" action="{% url 'criar_coluna' projeto_id=projeto.id %}">
+        {% csrf_token %}
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modal-criar-coluna-titulo">Criar Nova Coluna</h5>
+      </div>
+      <div class="modal-body">
+          <div class="form-group">
+            <label for="nome" class="fs-5">Nome:</label>
+            <input type="text" class="form-control" id="nome" name="nome" required>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="cancelar" class="btn btn-secondary" data-dismiss="modal-criar-coluna">Cancelar</button>
+        <button type="submit" class="btn btn-primary">Criar</button>
+      </div>
+    </div>
+  </div>
+</form>
+</div>
+<script>
+    $(document).ready(function() {
+      $('#criar-coluna').click(function() {
+        $('#modal-criar-coluna').modal('show');
+      });
+    });
+  
+    $(document).ready(function() {
+      $('#cancelar').click(function() {
+        $('#modal-criar-coluna').modal('hide');
+      });
+    });
+  </script>
+{% endblock %}
