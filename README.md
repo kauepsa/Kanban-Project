@@ -61,3 +61,24 @@ Este é um projeto que simula um quadro Kanban , onde o usuário pode criar grup
 ```python manage.py runserver```
 
 * Abra o navegador e navegue até http://localhost:8000 para visualizar o projeto. Se desejar acessar o painel de administração , você pode acessá-lo em http://localhost:8000/admin usando as credenciais do superusuário que você criou anteriormente.
+
+
+
+# Contribuições
+Este é um projeto pessoal que eu fiz sozinho, mas ainda estou aberto a correções e sugestões. Se você encontrar um bug ou tiver uma ideia para melhorar o projeto, sinta-se livre para me informar.
+
+Embora eu não possa garantir que irei incorporar todas as contribuições que eu receber, agradeço o interesse e o esforço de todos os colaboradores. Se você quiser contribuir com código, por favor, crie um fork do meu repositório e envie um pull request com as suas mudanças. Estou aberto a discutir quaisquer sugestões e fazer o melhor para incorporá-las no projeto, desde que estejam de acordo com a minha visão e objetivos.
+
+Se você encontrar algum problema ou tiver alguma dúvida sobre o projeto, por favor, abra uma issue no meu repositório. Terei o prazer de ajudá-lo e agradeço a sua ajuda para tornar o projeto ainda melhor.
+
+
+
+
+# Licença MIT
+
+Este projeto está licenciado sob a Licença MIT - consulte o arquivo LICENSE para obter mais detalhes.
+
+A Licença MIT é uma licença permissiva, o que significa que permite que outras pessoas usem, modifiquem e distribuam o seu código, até mesmo para fins comerciais, desde que atribuam a você os créditos de autoria originais e incluam uma cópia da licença em qualquer redistribuição. Isso faz com que a Licença MIT seja popular entre projetos de código aberto que desejam encorajar a colaboração e o uso amplo do seu código.
+
+Ao escolher a Licença MIT para este projeto, esperamos incentivar outros desenvolvedores a usar e contribuir para o nosso projeto, e ajudar a construir uma comunidade forte em torno dele. Se você tiver alguma dúvida ou preocupação sobre a Licença MIT ou o uso deste projeto, por favor, não hesite em entrar em contato conosco.
+
