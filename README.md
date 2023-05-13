@@ -1,5 +1,9 @@
 # Projeto Kanban
 Este é um projeto que simula um quadro Kanban , onde o usuário pode criar grupos (projetos) e junto com outros usuários , criar colunas e tarefas para gerenciar seus projetos . 
+# Exemplo em produção: <br>
+<a href="https://kauecrist.pythonanywhere.com">Projeto Kanban (Python Anywhere) </a>
+
+
 
 # Tecnologias Utilizadas
 * Python 
