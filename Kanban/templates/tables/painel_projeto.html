@@ -1,0 +1,71 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="container-fluid">
+  <div class="row" style="min-height: 80vh;">
+    <div class="col-lg-3 col-12 mt-5">
+      <div class="col-12 text-center">
+        <h2 class="fs-1 fw-bolder">{{ projeto.titulo }}</h2>
+        <p class="fs-4 fw-semibold">{{ projeto.descricao }}</p>
+        <span>
+            <h3 class="fs-4 p-0 fw-bold">
+                <a href="{% url 'perfil' projeto.dono %}" class="text-dark text-decoration-none" target="_blank">
+                    Dono - {{ projeto.dono.nome }}
+                </a>
+            </h3>
+            <p class="fs-4 fw-semibold">
+                <a href="{% url 'perfil' projeto.dono %}" class="text-dark text-decoration-none" target="_blank">
+                    {{ projeto.dono }}
+                </a>
+                - Idade: {{ projeto.dono.idade }}
+            </p>
+        </span>
+        <p class="fs-6 fw-semi-bold">Data de entrega: {{ projeto.prazo }}</p>
+      </div>
+    </div>
+    <div class="col-lg-9 col-12 mt-4 mb-4 px-0 mt-5">
+      <div class="container-fluid">
+        <div class="row" style="height: 50vh">
+            <div class="col-md-6 col-6">
+              <a class="btn btn-success shadow d-flex justify-content-center align-items-center" href="{% url 'tables' projeto.id %}" style="border-radius: 25px; width: 90%; height: 90%;">
+                <div class="d-grid">
+                  <i class="fa fa-columns fs-1"></i>
+                  <p class="fs-4 fw-semibold">Tabelas</p>
+                </div>
+              </a>
+            </div>
+
+            <div class="col-md-6 col-6">
+              <a class="btn btn-primary shadow d-flex justify-content-center align-items-center" href="{% url 'gerenciar_membros' projeto.id %}" style="border-radius: 25px; width: 90%; height: 90%;">
+                <div class="d-grid">
+                  <i class="fa fa-users fs-1"></i>
+                  <p class="fs-4 fw-semibold">Usuários</p>
+                </div>
+              </a>
+            </div>
+
+            <div class="col-md-6 col-6">
+              <a class="btn btn-secondary shadow d-flex justify-content-center align-items-center" href="{% url 'tarefas' projeto.id %}" style="border-radius: 25px; width: 90%; height: 90%;">
+                <div class="d-grid">
+                  <i class="fa-solid fa-list-check fs-1"></i>
+                  <p class="fs-4 fw-semibold">Tarefas</p>
+                </div>
+              </a>
+            </div>
+
+            <div class="col-md-6 col-6">
+              <a class="btn btn-dark d-flex shadow justify-content-center align-items-center" href="{% url 'editar_projeto' projeto.id %}" style="border-radius: 25px; width: 90%; height: 90%;">
+                <div class="d-grid">
+                  <i class="fa fa-cog fs-1"></i>
+                  <p class="fs-4 fw-semibold">Config</p>
+                </div>
+              </a>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

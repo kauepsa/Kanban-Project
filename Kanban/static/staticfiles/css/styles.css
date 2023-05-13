@@ -1,0 +1,48 @@
+body {
+    font-family: Helvetica, Arial, sans-serif;
+}
+
+
+
+
+.navbar {
+    background-color: black;
+    box-shadow: 0px 5px 5px -5px gray;
+    margin-bottom: 0;
+    }
+
+    .navbar-dark .navbar-nav .nav-link {
+    color: #2e2e2e;
+    font-weight: bold;
+    }
+
+
+    .navbar a {
+    color: rgb(255, 255, 255);
+    }
+    .navbar a:hover {
+        color: gray;
+    }
+
+    .navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3e%3cpath stroke='%23fff' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+    }
+
+
+    .accordion-button {
+        background-color: #f6f3f5;
+    }
+
+.btn-circle {
+  width: 45px;
+  height: 45px;
+  line-height: 45px;
+  text-align: center;
+  padding: 0;
+  border-radius: 50%;
+}
+
+.btn-circle i {
+  position: relative;
+  top: -1px;
+}

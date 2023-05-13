@@ -1,0 +1,30 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block content %}
+<div class="container-fluid justify-content-center" style="background: #D7DDE8;">
+    <div class="row">
+        <div class="col d-flex text-light align-items-center justify-content-center">
+            <div class="box fw-bold m-3 p-5 border rounded-3 bg-black align-items-center">
+            <form method="POST">
+            {% csrf_token %}
+            <h2 class="my-4 text-center">Login de Usuário</h2>
+            <hr>
+            {{ form.as_p }}
+            <div class="box-12 text-center m-2">
+                <input class="btn btn-light border border-dark" type="submit" value='Entrar'>
+            </div>
+            </form>
+            <hr>
+            <small class="text-muted">
+                <a href="{% url 'password_reset' %}">Esqueceu sua senha?</a>
+            </small>
+            <hr>
+            <div class="box my-3 text-center justify-content-center">
+                <h2 class="fs-4 pt-2 pb-2">Ainda não possui uma conta? Cadastre-se agora mesmo e comece a utilizar nossa plataforma.</h2>
+                <a href="{% url 'cadastro' %}" class="btn btn-secondary mb-3 border">Registro</a>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,147 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block content %}
+<div class="container-fluid text-light">
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="row">
+        <div class="col-md-3 col-sm-4" style="background: #D7DDE8;">
+            <div class="card fw-bold mt-3 mb-3 border rounded-3 bg-dark">
+                <div class="card-body text-center overflow-hidden">
+                    <div class="position-relative align-items-center justify-content-center">
+                        {% if form.instance.foto_perfil %}
+                        <div class="card-img-top">
+                            <div class="d-flex flex-column align-items-center text-center">
+                                <img class="rounded-circle mt-1" id="foto-perfil-preview" src="{{ form.instance.foto_perfil.url }}"
+                                style="width: 150px; height: 150px; object-fit: cover; object-position: 0 50%;">
+                            </div>
+                        </div>
+                        {% else %}
+                        <div class="card-img-top">
+                            <div class="d-flex flex-column align-items-center text-center">
+                                <img class="rounded-circle mt-1" id="foto-perfil-preview" src="{% static 'staticfiles/images/foto_perfil_default.jpg' %}"
+                                style="width: 150px; height: 150px; object-fit: cover; object-position: 0 50%;">
+                            </div>
+                        </div>
+                        {% endif %}
+                        {% if user.username == form.instance.username %}
+                        <label class="position-absolute" style="top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                            <i class="fa-solid fa-image" title="Upload foto de perfil" id="pfp" style="font-size: 45px;"></i>
+                            {{ form.foto_perfil }}
+                        </label>
+                        <script>
+                            const inputFotoPerfil = document.getElementById('foto-perfil-input');
+                            const previewFotoPerfil = document.getElementById('foto-perfil-preview');
+
+                            inputFotoPerfil.addEventListener('change', () => {
+                                const file = inputFotoPerfil.files[0];
+                                if (file) {
+                                    previewFotoPerfil.src = URL.createObjectURL(file);
+                                    previewFotoPerfil.style.backgroundImage = `url(${URL.createObjectURL(file)})`;
+                                }
+                            });
+
+                            </script>
+                        {% endif %}
+                    </div>
+                </div>
+                {% if user.username == form.instance.username %}
+                <div class="card-footer">
+                    {{ form.nome }}
+                </div>
+                <ul class="list-group p-1">
+                    <li class="list-group-item bg-dark bg-opacity-10">
+                        <span class="fs-5 text-light">Dados Pessoais</span>
+                    </li>
+                    <li class="list-group-item bg-dark bg-opacity-10 text-light">
+                        {{ form.idade.label_tag }}
+                        {{ form.idade }}
+                    </li>
+                    <li class="list-group-item bg-dark bg-opacity-10 text-light">
+                        {{ form.genero.label_tag }}
+                        {{ form.genero }}
+                    </li>
+                </ul>
+                <ul class="list-group p-1 mb-4">
+                    <li class="list-group-item bg-dark bg-opacity-10">
+                        <span class="fs-4 text-light">Links e Redes</span>
+                    </li>
+                    <li class="list-group-item bg-dark bg-opacity-10 text-light">
+                        {{ form.github.label_tag }}
+                        {{ form.github }}
+                    </li>
+                    <li class="list-group-item bg-dark bg-opacity-10 text-light">
+                        {{ form.linkedin.label_tag }}
+                        {{ form.linkedin }}
+                    </li>
+                    <li class="list-group-item bg-dark bg-opacity-10 text-light">
+
+                    </li>
+                </ul>
+                {% else %}
+                <div class="card-footer">{{ form.instance.nome }}</div>
+                <ul class="list-group p-1">
+                    <li class="list-group-item bg-dark bg-opacity-10">
+                        <span class="fs-4 text-light">
+                            Dados Pessoais
+                        </span>
+                    </li>
+                    <li class="list-group-item bg-dark bg-opacity-10">
+                        <span class="fs-6 text-light">
+                            Idade: {{ form.instance.idade }}
+                        </span>
+                    </li>
+                    <li class="list-group-item bg-dark bg-opacity-10">
+                        <span class="fs-6 text-light">
+                            Gênero: {{ form.instance.genero }}
+                        </span>
+                    </li>
+                </ul>
+                <ul class="list-group p-1 mb-4">
+                    <li class="list-group-item bg-dark bg-opacity-10">
+                        <span class="fs-4 text-light">Links e Redes</span>
+                    </li>
+                    <li class="list-group-item bg-dark bg-opacity-10">
+                        <i class="fa-brands fa-github text-light"></i>
+                        <a href="{{ form.instance.github }}" target="_blank" >Github</a>
+                    </li>
+                    <li class="list-group-item bg-dark bg-opacity-10">
+                        <i class="fa-brands fa-linkedin text-light"></i>
+                        <a href="{{ form.instance.linkedin }}" target="_blank">Linkedin</a>
+                    </li>
+                </ul>
+                {% endif %}
+            </div>
+        </div>
+        <div class="col-md-9 col-sm-8 align-items-end" style="background: #D7DDE8; min-height: 80vh;">
+            <div class="card fw-bold mt-3 mb-0 bg-dark" style="min-height: 46vh;">
+                <div class="card-title mt-3 mb-3">
+                    <h3 class="fs-3 text-center">Sobre mim</h3>
+                </div>
+                <div class="card-body text-center">
+                    {% if user.username == form.instance.username %}
+                    {{ form.descricao }}
+                    <input class="btn btn-light mt-2 mb-1" type="submit" value='Salvar'>
+                    {% else %}
+                    <div class="box">Parece que <strong>{{ form.instance.username }}</strong> tinha nada a dizer sobre ele(a) ... </div>
+                    {% endif %}
+                </div>
+            </div>
+            {% if user.username == form.instance.username %}
+            <div class="card p-1 mb-4 mt-0 bg-dark" style="min-height: 46vh; width: 100%;">
+                <div class="card-title text-center mt-2 mb-2"><h2 class="fs-3">Configurações de Conta</h2></div>
+                <div class="card-body mt-5 pt-5 text-center">
+                    <p class="fs-5">Deseja trocar sua senha?</p>
+                    <a href="{% url 'password_change' %}" class="btn btn-danger">Trocar Senha</a>  </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</form>
+</div>
+<style>
+    #pfp:hover {
+        color: yellow;
+    }
+</style>
+{% endblock %}

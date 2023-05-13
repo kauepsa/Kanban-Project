@@ -1,0 +1,85 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block content %}
+<div class="container-fluid"  style="min-height: 90vh;">
+    <div class="row">
+        <div class="col-12 mt-3 justify-content-center text-center d-flex">
+            <div class="bg-light text-light p-2" style="border: 2px solid black; border-radius: 10px;">
+                <a class="btn btn-secondary btn-circle" href="{% url 'projeto_detail' projeto.id %}"><i class="fa-solid fa-arrow-left"></i></a>
+                <a class="btn btn-success btn-circle" href="{% url 'tables' projeto.id %}"><i class="fa fa-columns text-light"></i></a>
+                <a class="btn btn-primary btn-circle" href="{% url 'gerenciar_membros' projeto.id %}"><i class="fa fa-users"></i></a>
+                <a class="btn btn-dark btn-circle" href="{% url 'editar_projeto' projeto.id %}"><i class="fa fa-cog"></i></a>
+                <button type="button" class="btn btn-circle btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa fa-x"></i></button>
+                <!-- Modal -->
+                <div class="modal fade text-light" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content text-light bg-dark">
+                            <div class="modal-header">
+                                <h5 class="modal-title text-center" id="exampleModalLabel">Confirmação de saída</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p>Você tem certeza que deseja sair do projeto?</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                <a href="{% url 'projeto_sair' pk=projeto.pk %}" class="btn btn-danger">Confirmar</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 mb-4">
+            <h1 class="fw-bolder" style="text-align:center;">
+                Minhas de Tarefas
+            </h1>
+            <h3 class="fs-4 fw-bold text-start">
+                Projeto: {{ projeto.titulo }} <br> Data de entrega do projeto: {{ projeto.prazo }}
+
+            </h3>
+            <hr>
+            </div>
+            {% for tarefa in tarefas %}
+            <div class="col-12 col-md-6 bg-dark" style="border: 2px solid gray; border-radius: 15px;">
+               <div class="card bg-dark">
+                    <div class="card-title text-center text-light fs-4 fw-bold">
+                        Tarefa: {{ tarefa.titulo }}
+                    </div>
+                    <div class="card-body">
+                        <p class="fs-6 fw-semibold text-light">Descrição: {{ tarefa.descricao }}</p>
+                        <p class="fs-6 fw-semibold text-light">Criado em: {{ tarefa.criado_em }}</p>
+                    </div>
+                    <div class="card-footer text-center">
+                        <div class="btn-group-sm">
+                            <a href="{% url 'editar_item' projeto.id tarefa.id %}" class="btn btn-secondary">Editar</a>
+                            <a href="{% url 'excluir_item' projeto.id tarefa.coluna.id tarefa.id %}" class="btn btn-danger">Excluir</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        {% endfor %}
+    </div>
+</div>
+<style>
+        .btn-circle {
+  width: 45px;
+  height: 45px;
+  line-height: 45px;
+  text-align: center;
+  padding: 0;
+  border-radius: 50%;
+}
+
+.btn-circle i {
+  position: relative;
+  top: -1px;
+}
+</style>
+
+{% endblock %}

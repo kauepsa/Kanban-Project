@@ -1,0 +1,11 @@
+{% autoescape off %}
+Por favor , não responda este email.
+
+
+Olá {{ user }}, 
+
+Por favor clique no link abaixo para verificar seu email e finalizar seu cadastro.
+
+http://{{ domain }}{% url 'activate' uidb64=uid token=token %}
+
+{% endautoescape %}
