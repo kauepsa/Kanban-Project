@@ -1,0 +1,66 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container-fluid justify-content-center" style="background: lightgray;">
+    <div class="row" style="min-height: 80vh;">
+        <div class="col text-dark align-items-center justify-content-center">
+            <h3 class="fs-4 mt-2">Procurar projetos</h3>
+            <form class="d-flex" style="min-width: 50vw;">
+                <input class="form-control me-2" type="search" placeholder="Pesquisar" aria-label="Pesquisar" id="search-bar">
+                <button class="btn btn-secondary ms-auto me-2" type="submit"><i class="fas fa-search fa-lg"></i></button>
+            </form>
+            <script>
+              const searchForm = document.querySelector('form');
+              const searchInput = document.querySelector('#search-bar');
+
+              searchForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const searchTerm = searchInput.value;
+                window.location.href = `/projetos/search/${searchTerm}`;
+              });
+            </script>
+            <div class="box fw-bold m-3 p-5 border border-dark rounded-3 bg-secondary mx-0 px-0">
+                <table class="table text-light">
+                    <h2 class="fs-3 mb-3 text-center text-light">Lista de Projetos</h2>
+                    <thead  class="text-center">
+                      <tr>
+                        <th scope="col">Título</th>
+                        <th scope="col">Responsável</th>
+                        <th scope="col">Solicitação de Entrada</th>
+                      </tr>
+                    </thead>
+                    <tbody  class="text-center">
+                      {% for projeto in projetos %}
+                      <tr>
+                        <td><a href="{% url 'projeto_detail' projeto.id %}">{{ projeto.titulo }}</a></td>
+                        <td><a href="{% url 'perfil' projeto.dono %}" target="_blank">{{ projeto.dono }}</a></td>
+                        {% if user not in projeto.membros.all and user not in projeto.moderadores.all and user != projeto.dono and user not in projeto.solicitacoes_entrada.all %}
+                        <td>
+                            <form method="post" action="{% url 'solicitar_entrada' projeto_id=projeto.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-primary"><i class="fa-solid fa-user-plus"></i></button>
+                            </form>
+                        </td>
+                        {% endif %}
+                        {% if user in projeto.solicitacoes_entrada.all %}
+                        <td>
+                            <form method="post" action="{% url 'cancelar_entrada' projeto_id=projeto.id %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger">Cancelar</button>
+                            </form>
+                        </td>
+                        {% endif %}
+                      </tr>
+                      {% empty %}
+                      <tr>
+                        <td colspan="2">Nenhum projeto encontrado.</td>
+                      </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

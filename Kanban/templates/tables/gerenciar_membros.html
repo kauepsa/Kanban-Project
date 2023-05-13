@@ -1,0 +1,192 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block content %}
+<div class="container-fluid">
+    <div class="row" style="min-height: 80vh;">
+        <div class="col-12 bg-dark pb-4" style="min-height: 100vh">
+            <div class="row p-4 d-flex bg-dark align-items-start" style="min-height: 50vh;">
+                <div class="col-12 justify-content-center text-center d-flex">
+                    <div class="bg-light text-light p-2" style="border: 2px solid black; border-radius: 10px;">
+                        <a class="btn btn-secondary btn-circle" href="{% url 'projeto_detail' projeto.id %}"><i class="fa-solid fa-arrow-left"></i></a>
+                        <a class="btn btn-success btn-circle" href="{% url 'tarefas' projeto.id %}"><i class="fa-solid fa-list-check"></i></a>
+                        <a class="btn btn-primary btn-circle" href="{% url 'tables' projeto.id %}"><i class="fa fa-columns"></i></a>
+                        <a class="btn btn-dark btn-circle" href="{% url 'editar_projeto' projeto.id %}"><i class="fa fa-cog"></i></a>
+                        <button type="button" class="btn btn-circle btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa fa-x"></i></button>
+                        <!-- Modal -->
+                        <div class="modal fade text-light" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content text-light bg-dark">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title text-center" id="exampleModalLabel">Confirmação de saída</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>Você tem certeza que deseja sair do projeto?</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                        <a href="{% url 'projeto_sair' pk=projeto.pk %}" class="btn btn-danger">Confirmar</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 class="fs-2 text-light text-center"> Membros</h3>
+                <div class="bg-light col-12 mt-2 pt-2 pb-2 col-md-6 text-dark text-center" style="border: 2px solid black; border-radius: 15px;">
+                  <div class="d-lg-flex d-grid justify-content-center text-center justify-content-lg-between align-items-center mx-0 px-0">
+                      {% if projeto.dono.foto_perfil %}
+                      <img class="rounded-3 mt-1 d-none d-md-block" id="foto-perfil-preview" src="{{ projeto.dono.foto_perfil.url }}"
+                                style="height: 45px;">
+                      {% else %}
+                      <img class="rounded-3 mt-1 d-none d-md-block" id="foto-perfil-preview" src="{% static 'staticfiles/images/foto_perfil_default.jpg' %}"
+                                style="height: 45px;">
+                      {% endif %}
+                    <span class="fs-5 fw-semibold">
+                        <a href="{% url 'perfil' projeto.dono %}" class="text-dark text-decoration-none" target="_blank"> Dono - {{ projeto.dono.nome }}</a>
+                    </span>
+                    <div class="btn-group">
+                      <a class="btn btn-light"><i class="fa fa-lg fa-crown"></i></a>
+                    </div>
+                  </div>
+                </div>
+                {% for moderador in projeto.moderadores.all %}
+                <div class="bg-light col-12 mt-2 pt-2 pb-2 col-md-6 text-dark text-center" style="border: 2px solid black; border-radius: 15px;">
+                  <div class="d-lg-flex d-grid justify-content-center justify-content-lg-between align-items-center mx-0 px-0">
+                      {% if moderador.foto_perfil %}
+                      <img class="rounded-3 mt-1 d-none d-md-block" id="foto-perfil-preview" src="{{ moderador.foto_perfil.url }}"
+                                style="height: 45px;">
+                      {% else %}
+                      <img class="rounded-3 mt-1 d-none d-md-block" id="foto-perfil-preview" src="{% static 'staticfiles/images/foto_perfil_default.jpg' %}"
+                                style="height: 45px;">
+                      {% endif %}
+                    <span class="fs-5 fw-semibold">
+                        <a href="{% url 'perfil' moderador.username %}" class="text-dark text-decoration-none" target="_blank"> Moderador - {{ moderador.nome }}</a>
+                    </span>
+                    <div class="btn-group">
+                      <form method="post" action="{% url 'transferir_dono' projeto_id=projeto.id user_id=moderador.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-dark"><i class="fa fa-crown"></i>Promover</button>
+                      </form>
+                      <form method="post" action="{% url 'remover_moderador' projeto_id=projeto.id user_id=moderador.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-secondary">Rebaixar</button>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+                {% endfor %}
+                {% for membro in projeto.membros.all %}
+                <div class="bg-light col-12 mt-2 pt-2 pb-2 col-md-6 text-dark text-center" style="border: 2px solid black; border-radius: 15px;">
+                  <div class="d-lg-flex d-grid justify-content-center justify-content-lg-between align-items-center mx-0 px-0">
+                      {% if membro.foto_perfil %}
+                      <img class="rounded-3 mt-1 d-none d-md-block" id="foto-perfil-preview" src="{{ membro.foto_perfil.url }}"
+                                style="height: 45px;">
+                      {% else %}
+                      <img class="rounded-3 mt-1 d-none d-md-block" id="foto-perfil-preview" src="{% static 'staticfiles/images/foto_perfil_default.jpg' %}"
+                                style="height: 45px;">
+                      {% endif %}
+                    <span class="fs-5 fw-semibold">
+                        <a href="{% url 'perfil' membro.username %}" class="text-dark text-decoration-none" target="_blank"> Membro - {{ membro.nome }}</a>
+                    </span>
+                    <div class="btn-group">
+                        <form method="post" action="{% url 'adicionar_moderador' projeto_id=projeto.id user_id=membro.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-dark">Promover</button>
+                        </form>
+                        <form method="post" action="{% url 'remover_membro' projeto_id=projeto.id user_id=membro.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-secondary">Expulsar</button>
+                        </form>
+                    </div>
+                  </div>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="row p-4 d-flex bg-light align-items-end" style="min-height: 50vh;">
+                <h3 class="fs-2 text-dark text-center">Convites</h3>
+                {% for convite in projeto.convites_enviados.all %}
+                <div class="bg-light col-12 mt-2 pt-2 pb-2 col-md-6 text-dark text-center" style="border: 2px solid black; border-radius: 15px;">
+                  <div class="d-lg-flex d-grid justify-content-center justify-content-lg-between align-items-center mx-0 px-0">
+                      {% if convite.foto_perfil %}
+                      <img class="rounded-3 mt-1 d-none d-md-block" id="foto-perfil-preview" src="{{ convite.foto_perfil.url }}"
+                                style="height: 45px;">
+                      {% else %}
+                      <img class="rounded-3 mt-1 d-none d-md-block" id="foto-perfil-preview" src="{% static 'staticfiles/images/foto_perfil_default.jpg' %}"
+                                style="height: 45px;">
+                      {% endif %}
+                    <span class="fs-5 fw-semibold">
+                      <a href="{% url 'perfil' convite.username %}" class="text-dark text-decoration-none text-truncate" target="_blank">{{ convite.nome }} - {{ convite.username }}</a>
+                    </span>
+                    <div class="btn-group d-flex justify-content-center">
+                        <form method="post" action="{% url 'cancelar_convite' projeto_id=projeto.id invite_id=convite.id %}">
+                            {% csrf_token %}
+                            <button class="btn btn-dark" type="submit">Cancelar</button>
+                        </form>
+                    </div>
+                  </div>
+                </div>
+                {% endfor %}
+                <div class="bg-light col-12 pt-2 pb-2 text-dark text-center">
+                <form method="post" action="{% url 'convidar_membro' projeto_id=projeto.id %}">
+                {% csrf_token %}
+                    <div class="form-group">
+                      <div class="d-flex justify-content-center">
+                      <input type="text" class="form-control" name="membro" id="membro" placeholder="Adicionar Membro" style="width: 65%">
+                        <button type="submit" class="btn btn-secondary">Adicionar</button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+            </div>
+            <div class="row p-4" style="min-height: 50vh;">
+              <h2 class="fs-2 text-light text-center">Solicitações de Entrada</h2>
+              {% for solicitacao in projeto.solicitacoes_entrada.all %}
+                <div class="bg-light col-12 mt-2 pt-2 pb-2 col-md-6 text-dark text-center" style="border: 2px solid black; border-radius: 15px;">
+                  <div class="d-lg-flex d-grid justify-content-center justify-content-lg-between align-items-center mx-0 px-0">
+                      {% if solicitacao.foto_perfil %}
+                      <img class="rounded-3 mt-1 d-none d-md-block" id="foto-perfil-preview" src="{{ solicitacao.foto_perfil.url }}"
+                                style="height: 45px;">
+                      {% else %}
+                      <img class="rounded-3 mt-1 d-none d-md-block" id="foto-perfil-preview" src="{% static 'staticfiles/images/foto_perfil_default.jpg' %}"
+                                style="height: 45px;">
+                      {% endif %}
+                    <span class="fs-5 fw-semibold">
+                      <a href="{% url 'perfil' solicitacao.username %}" class="text-dark text-decoration-none text-truncate" target="_blank">{{ solicitacao.nome }} - {{ solicitacao.username }}</a>
+                    </span>
+                    <div class="btn-group d-flex justify-content-center">
+                        <form method="post" action="{% url 'aceitar_solicitacao' projeto_id=projeto.id invite_id=solicitacao.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-dark">Aceitar</button>
+                        </form>
+                        <form method="post" action="{% url 'recusar_solicitacao' projeto_id=projeto.id invite_id=solicitacao.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-secondary">Recusar</button>
+                        </form>
+                    </div>
+                  </div>
+                </div>
+              {% empty %}
+              <h2 class="fs-4 fw-bolder text-center text-light"> Nenhuma solicitação de entrada encontrada ...</h2>
+              {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .btn-circle {
+  width: 45px;
+  height: 45px;
+  line-height: 45px;
+  text-align: center;
+  padding: 0;
+  border-radius: 50%;
+}
+
+.btn-circle i {
+  position: relative;
+  top: -1px;
+}
+</style>
+{% endblock %}

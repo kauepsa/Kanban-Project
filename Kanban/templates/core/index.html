@@ -1,0 +1,120 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block content %}
+<div class="container-fluid">
+    <div class="row" style=" background-size: cover ;background-image: url({% static 'staticfiles/images/hands-on-desk-at-meeting.jpg' %}) ; min-height: 100vh;">
+        <div class="col-12 pt-5 py-5 bg-dark bg-opacity-75 text-center">
+          <h1 class="display-2 fw-bold pt-5 pb-5 text-center text-light">Projeto Kanban!</h1>
+          <p class="fs-2 text-light">Gerencie e organize seus projetos em equipe.</p>
+          <a href="#collapseIntroducao" class="btn btn-dark mt-5 mb-5 border rounded" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="collapseIntroducao">O que é Kanban?</a>
+          <div class="collapse" id="collapseIntroducao">
+            <div class="mt-5 my-5 card card-body bg-dark text-light border-top border-bottom border-2 rounded fs-5 py-1" style="width=100vw;">
+              Kanban é uma metodologia japonesa de gestão baseada em um sistema de quadro de tarefas com etapas de desenvolvimento, que ajuda as empresas a visualizar e gerenciar seu processo de trabalho de forma mais eficiente e colaborativa. Isso resulta em um processo mais eficiente, redução de custos e melhoria da qualidade do produto final.</div>
+          </div>
+        </div>
+    </div>
+    {% if user.is_authenticated %}
+    <div class="row pb-5 mb-5 d-flex justify-content-center">
+      <div class="col-lg-6 mt-5 text-center">
+        <h2 class="fs-2 pt-2 pb-2">Bem-vindo {{ user.username }}! Clique no botão abaixo para acessar seus projetos.</h2>
+        <a href="{% url 'lista_projetos' %}" class="btn btn-primary">Projetos</a>
+      </div>
+    </div>
+    <hr>
+    {% endif %}
+    <div class="row pb-5">
+      <h2 class="fs-1 pt-4 text-center">Princípios do Kanban</h2>
+      <div class="col-lg-4 mt-5 col-sm-6">
+        <div class="card border border-5 rounded border-black text-center">
+          <div class="card-title fs-2">
+            Visualização
+          </div>
+          <div class="card-body mt-2">
+            <i class="fa-solid fa-chart-simple fs-2"></i>
+          </div>
+          <div class="card-footer">
+            Visualizar seu processo de trabalho no quadro Kanban permite que você acompanhe seu progresso e identifique gargalos e atrasos.
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4 mt-5 col-sm-6">
+        <div class="card border border-5 rounded border-black text-center">
+          <div class="card-title fs-2">
+            Progressão
+          </div>
+          <div class="card-body mt-2">
+            <i class="fa-solid fa-chart-line fs-2"></i>
+          </div>
+          <div class="card-footer">
+            Limitar a quantidade de tarefas em andamento no quadro Kanban evita sobrecarga e ajuda a concluir as tarefas dentro do prazo.
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4 mt-5 col-sm-6">
+        <div class="card border border-5 rounded border-black text-center">
+          <div class="card-title fs-2">
+            Colaboração
+          </div>
+          <div class="card-body mt-2">
+            <i class="fa-solid fa-users fs-2"></i>
+          </div>
+          <div class="card-footer">
+            Colaborar com sua equipe no quadro Kanban ajuda a concluir as tarefas de forma mais eficiente e a melhorar o processo de trabalho.
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4 mt-5 col-sm-6">
+        <div class="card border border-5 rounded border-black text-center">
+          <div class="card-title fs-2">
+            Melhoria
+          </div>
+          <div class="card-body mt-2">
+            <i class="fa-solid fa-rocket fs-2"></i>
+          </div>
+          <div class="card-footer pt-3">
+            Melhorar seu processo de trabalho no quadro Kanban é uma prática contínua para aumentar a eficiência e qualidade do produto final.
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4 mt-5 col-sm-6">
+        <div class="card border border-5 rounded border-black text-center">
+          <div class="card-title fs-2">
+            Satisfação do cliente
+          </div>
+          <div class="card-body mt-2">
+            <i class="fa-regular fa-smile fs-2"></i>
+          </div>
+          <div class="card-footer pt-3">
+            Atender às necessidades do cliente é o objetivo principal do Kanban, garantindo a qualidade e entrega dos produtos ou serviços no prazo acordado.
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4 mt-5 col-sm-6 pb-5">
+        <div class="card border border-5 rounded border-black text-center">
+          <div class="card-title fs-2">
+            Transparência
+          </div>
+          <div class="card-body mt-2">
+            <i class="fa-solid fa-globe fs-2"></i>
+          </div>
+          <div class="card-footer pt-3">
+            O Kanban destaca a transparência no processo de trabalho , permitindo que a equipe tenha uma visão clara das tarefas , responsabilidades e problemas.
+          </div>
+        </div>
+      </div>
+      {% if not user.is_authenticated %}
+        <hr>
+      <div class="col-lg-6 mt-5 text-center">
+        <h2 class="fs-4 pt-2 pb-2">Já possui uma conta? Faça já o seu login e continue gerenciando seus projetos!</h2>
+        <a href="{% url 'login' %}" class="btn btn-primary">Login</a>
+      </div>
+      <div class="col-lg-6 mt-5 text-center">
+        <h2 class="fs-4 pt-2 pb-2">Ainda não possui uma conta? Cadastre-se agora mesmo e transforme seu processo de trabalho!</h2>
+        <a href="{% url 'cadastro' %}" class="btn btn-primary mb-3">Registro</a>
+      </div>
+      {% endif %}
+    </div>
+
+</div>
+
+{% endblock %}

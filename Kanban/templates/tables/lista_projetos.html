@@ -1,0 +1,84 @@
+{% extends "core/base.html" %}
+{% load static %}
+{% block content %}
+<div class="container-fluid">
+    <div class="row" style="min-height: 100vh;">
+        <div class="col-12" style="background-color: rgb(209, 209, 209);">
+            <section role="search" style="min-height: 10vh;">
+                <h3 class="fs-4 mt-2">Procurar projetos</h3>
+                <form class="d-flex" style="min-width: 50vw;">
+                    <input class="form-control me-2" type="search" placeholder="Pesquisar" aria-label="Pesquisar" id="search-bar">
+                    <button class="btn btn-secondary ms-auto me-2" type="submit"><i class="fas fa-search fa-lg"></i></button>
+                </form>
+                <script>
+                const searchForm = document.querySelector('form');
+                const searchInput = document.querySelector('#search-bar');
+
+                searchForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const searchTerm = searchInput.value;
+                window.location.href = `/projetos/search/${searchTerm}`;
+                });
+                </script>
+            </section>
+            <div class="row mt-2 mb-1"  style="max-height: 5vh;">
+                <div class="col-12 text-end">
+                    <a href="{% url 'criar_projeto' %}" class="btn btn-dark">Novo Projeto</a>
+                </div>
+            </div>
+            <div class="row mt-5 border-top bg-light" style="min-height: 90vh;">
+                <div class="col-12 p-4 col-md-6 border-top border-3 border-secondary">
+                  <h3 class="fs-2 fw-bolder text-dark text-center">
+                    Meus projetos
+                  </h3>
+                  {% for projeto in projetos.projetos_pertencentes %}
+                  <div class="card bg-dark shadow mt-4 mb-2 text-light" style="border: 2px solid gray; border-radius: 15px;">
+                    <div class="card-title fs-4 fw-bold text-center">
+                        <a href="{% url 'projeto_detail' projeto.id %}">{{ projeto.titulo }}</a>
+                    </div>
+                    <hr>
+                    <div class="card-body text-center">
+                      <div class="d-md-flex d-block justify-content-between">
+                        <p class="fs-6 text-light  fw-bold p-1 text-truncate">Responsável: <a href="{% url 'perfil' projeto.dono %}" class="text-light text-decoration-none" target="_blank">{{ projeto.dono.nome }}</p>
+                    </div>
+                      <a href="{% url 'projeto_detail' projeto.id %}" class="btn btn-light">Acessar</a>
+                    </div>
+                  </div>
+                  {% endfor %}
+                </div>
+                <div class="col-12 p-4 col-md-6 bg-dark text-light mb-0 pb-0">
+                  <h3 class="fs-2 fw-bolder text-light text-center">
+                    Convites
+                  </h3>
+                  {% for convite in projetos.convites %}
+                  <div class="card bg-light shadow mt-4 mb-2 text-dark" style="border: 2px solid gray; border-radius: 15px;">
+                    <div class="card-title fs-4 fw-bold text-center">
+                      {{ convite.titulo }}
+                    </div>
+                    <hr>
+                    <div class="card-body text-center">
+                        <div class="d-md-flex d-block justify-content-between">
+                          <p class="fs-6 text-dark  fw-bold p-1 text-truncate">Responsável: <a href="{% url 'perfil' convite.dono %}" class="text-dark text-decoration-none" target="_blank">{{ convite.dono.nome }}</p>
+                        </div>
+                        <div class="btn-group">
+                            <form method="post" action="{% url 'aceitar_convite' projeto_id=convite.id %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-dark">Aceitar</button>
+                            </form>
+                            <form method="post" action="{% url 'recusar_convite' projeto_id=convite.id %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-secondary">Recusar</button>
+                            </form>
+                        </div>
+                    </div>
+                  </div>
+                  {% empty %}
+                  <h3 class="fs-4 text-light fw-semibold text-center">Nenhum convite encontrado ...</h3>
+                  {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block content %}
+<div class="container-fluid justify-content-center" style="background: #D7DDE8;">
+    <div class="row">
+        <div class="col d-flex text-light align-items-center justify-content-center">
+            <div class="box fw-bold m-3 p-5 border rounded-3 bg-black align-items-center">
+                <h2 class="fs-3 mb-3">Editar Projeto</h2>
+                <hr>
+                <form method="POST">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <div class="box-12 text-center m-2">
+                        <a href="{% url 'lista_projetos' %}" class="btn btn-secondary">Cancelar</a>
+                        <input class="btn btn-light" type="submit" value='Salvar'>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

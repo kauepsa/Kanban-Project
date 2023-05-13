@@ -1,0 +1,87 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block content %}
+<div class="container-fluid">
+    <div class="row" style='min-height: 90vh;'>
+        <div class="col-lg-6 text-center p-5">
+            <h1 class="fs-3 mb-5">Novo por aqui? Tire algumas dúvidas!</h1>
+            <div class="accordion" id="accordionquestions">
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="headingOne">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        Como criar um novo projeto?
+                    </button>
+                  </h2>
+                  <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionquestions">
+                    <div class="accordion-body">
+                        Para criar um novo projeto, basta clicar no botão <strong>Novo Projeto</strong> na página inicial. Em seguida, preencha as informações necessárias, como nome, descrição , projeto público ou privado. Você também pode convidar outros usuários para participar do projeto e atribuir tarefas a eles. Depois de criar o projeto, você pode gerenciá-lo na página do projeto
+                    </div>
+                  </div>
+                </div>
+
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="headingTwo">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                      Como entrar em um projeto existente?
+                    </button>
+                  </h2>
+                  <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionquestions">
+                    <div class="accordion-body">
+                      Você pode entrar em um projeto existente de duas maneiras. A primeira é sendo convidado pela moderação do projeto , aparecerá uma notificação com o convite e basta clicar em <strong>Aceitar</strong> para entrar no projeto. A segunda maneira é solicitando a entrada através da página de pesquisa clicando em <strong>Solicitar Entrada</strong> , você deverá esperar ser aceito pela moderação do projeto para participar da equipe.
+                    </div>
+                  </div>
+                </div>
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingThree">
+                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                        Como criar uma nova tarefa?
+                      </button>
+                    </h2>
+                    <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionquestions">
+                      <div class="accordion-body">
+                        Dentro do painel do projeto , terá um botão escrito <strong>Criar Tarefa</strong> , ele irá abrir um menu onde você pode escolher o nome da tarefa , a descrição e escolher qual coluna ela pertencerá inicialmente. Quando criada a tarefa irá mostrar também o nome de quem a criou ou a quem ela foi atribuída.
+                      </div>
+                    </div>
+                  </div>
+                  <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingFour">
+                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                        Quanto custa para participar?
+                      </button>
+                    </h2>
+                    <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#accordionquestions">
+                      <div class="accordion-body">
+                        O nosso serviço é completamente gratuito. Não há qualquer custo para se registrar e utilizar todas as funcionalidades disponíveis. Você pode criar seus projetos , convidar outros usuários e gerenciar suas tarefas sem precisar pagar absolutamente nada.
+                      </div>
+                    </div>
+                  </div>
+            </div>
+        </div>
+        <div class="col-lg-6 p-5">
+          <h1>Deseja enviar um feedback?</h1>
+          <form method="post" class="mt-4">
+            {% csrf_token %}
+            <div class="form-group mt-2 mb-2">
+              <label for="title" class="fs-4 fw-semibold">Título</label>
+              <input type="text" name="title" class="form-control" required>
+            </div>
+            <div class="form-group mt-2 mb-2">
+              <label for="subject" class="fs-4 fw-semibold">Assunto</label>
+              <select name="subject" class="form-control" required>
+                <option value="">Escolha um assunto</option>
+                <option value="F">Feedback</option>
+                <option value="B">Reportar um bug</option>
+                <option value="H">Preciso de ajuda</option>
+              </select>
+            </div>
+            <div class="form-group mt-2 mb-2">
+              <label for="content" class="fs-4 fw-semibold">Conteúdo</label>
+              <textarea name="content" class="form-control" rows="5" required></textarea>
+            </div>
+            <button type="submit" class="mt-2 btn btn-primary">Enviar</button>
+          </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
