@@ -52,6 +52,16 @@ Este é um projeto que simula um quadro Kanban , onde o usuário pode criar grup
 * Instale as dependências do projeto usando o arquivo requirements.txt que está no repositório. Você pode fazer isso executando o comando: <br>
 ```pip install -r requirements.txt```
 
+* Crie um arquivo .env com os seguintes dados:<br>
+```
+EMAIL_HOST=email-host-do-seu-email
+EMAIL_HOST_USER=seu-email
+EMAIL_HOST_PASSWORD=senha-ou-app-password
+EMAIL_PORT=587
+EMAIL_USE_TLS=True
+SECRET_KEY=sua-secret-key
+```
+
 * Configure o banco de dados caso deseje utilizar algum outro além do Sqlite3 (Banco de dados padrão do Django).
 
 * Execute as migrações do banco de dados. Você pode fazer isso executando o comando abaixo: <br>
